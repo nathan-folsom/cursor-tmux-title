@@ -1,0 +1,17 @@
+{
+  "name": "cursor-tmux-title",
+  "version": "0.1.0",
+  "description": "Decorate the tmux/terminal title with a busy indicator while the Cursor agent is running",
+  "type": "module",
+  "bin": {
+    "cursor-tmux-title": "src/cli.js"
+  },
+  "files": [
+    "src/",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node src/cli.js test"
+  },
+  "license": "MIT"
+}
