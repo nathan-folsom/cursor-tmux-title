@@ -5,6 +5,11 @@ import {
   unregisterCursorHooks,
   hasCursorHooks,
 } from "./cursor-hooks.js";
+import {
+  registerClaudeHooks,
+  unregisterClaudeHooks,
+  hasClaudeHooks,
+} from "./claude-hooks.js";
 import { hookCommand } from "./hook.js";
 import {
   isInsideTmux,
@@ -26,13 +31,15 @@ States (per tmux window):
   busy    Agent is processing a prompt
 
 Commands:
-  install     Register hooks in ~/.cursor/hooks.json
-  uninstall   Remove hooks from ~/.cursor/hooks.json
-  status      Show installation and current state
-  test        Cycle through ready → busy → ready → unset (run inside tmux)
-  clear       Unset the state for the current tmux window
-  hook        (internal) Process a hook event from stdin
-  help        Show this help message
+  install            Register hooks in ~/.cursor/hooks.json
+  uninstall          Remove hooks from ~/.cursor/hooks.json
+  install-claude     Register hooks in ~/.claude/settings.json
+  uninstall-claude   Remove hooks from ~/.claude/settings.json
+  status             Show installation and current state
+  test               Cycle through ready → busy → ready → unset (run inside tmux)
+  clear              Unset the state for the current tmux window
+  hook               (internal) Process a hook event from stdin
+  help               Show this help message
 
 Tmux setup:
   Reference the state in your set-titles-string, e.g.
@@ -81,9 +88,29 @@ async function main() {
       break;
     }
 
+    case "install-claude": {
+      const cmd = resolveHookCommand();
+      const count = registerClaudeHooks(cmd);
+      console.log(`Registered ${count} hook events in ~/.claude/settings.json`);
+      console.log(`Hook command: ${cmd}`);
+      break;
+    }
+
+    case "uninstall-claude": {
+      const removed = unregisterClaudeHooks();
+      if (removed > 0) {
+        console.log(`Removed ${removed} hook entries from ~/.claude/settings.json`);
+      } else {
+        console.log("No cursor-tmux-title hooks found to remove.");
+      }
+      break;
+    }
+
     case "status": {
-      const installed = hasCursorHooks();
-      console.log(`Hooks installed: ${installed ? "yes" : "no"}`);
+      const cursorInstalled = hasCursorHooks();
+      const claudeInstalled = hasClaudeHooks();
+      console.log(`Cursor hooks installed: ${cursorInstalled ? "yes" : "no"}`);
+      console.log(`Claude Code hooks installed: ${claudeInstalled ? "yes" : "no"}`);
       if (isInsideTmux()) {
         const windowId = getWindowId();
         const state = getState(windowId);

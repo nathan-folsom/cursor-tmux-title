@@ -8,10 +8,17 @@ import {
 } from "./tmux.js";
 
 const EVENT_TRANSITIONS = {
+  // Cursor events
   sessionStart: { type: "set", value: STATE_READY },
   beforeSubmitPrompt: { type: "set", value: STATE_BUSY },
   stop: { type: "set", value: STATE_READY },
   sessionEnd: { type: "unset" },
+  // Claude Code events
+  SessionStart: { type: "set", value: STATE_READY },
+  UserPromptSubmit: { type: "set", value: STATE_BUSY },
+  Stop: { type: "set", value: STATE_READY },
+  Notification: { type: "set", value: STATE_READY },
+  SessionEnd: { type: "unset" },
 };
 
 export function processEvent(payload) {
