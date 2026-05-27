@@ -21,6 +21,15 @@ State transitions are driven by Cursor hooks:
 - `stop` → `ready`
 - `sessionEnd` → unset
 
+…and by the equivalent Claude Code hooks:
+
+- `SessionStart` → `ready`
+- `UserPromptSubmit` → `busy`
+- `PostToolUse` → `busy` (the agent is actively working again — also clears `ready` after a mid-turn `Notification`, e.g. once you answer a question or grant a permission)
+- `Stop` → `ready`
+- `Notification` → `ready` (agent is waiting for your input mid-turn)
+- `SessionEnd` → unset
+
 ## Install
 
 ```bash

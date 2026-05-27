@@ -10,6 +10,7 @@ const HOOK_MARKER = "cursor-tmux-title";
 const CLAUDE_HOOK_EVENTS = [
   "SessionStart",
   "UserPromptSubmit",
+  "PostToolUse",
   "Stop",
   "Notification",
   "SessionEnd",
