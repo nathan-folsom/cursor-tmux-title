@@ -11,7 +11,9 @@ const CLAUDE_HOOK_EVENTS = [
   "SessionStart",
   "UserPromptSubmit",
   "PostToolUse",
+  "PostToolUseFailure",
   "Stop",
+  "StopFailure",
   "Notification",
   "SessionEnd",
 ];
